@@ -15,7 +15,7 @@ class TestPickly(unittest.TestCase):
     def test_invalid_json_format(self):
         json_str = '''
         {
-            name: 'Pickly',
+            name: "Pickly",
             value: {
         }
         '''
