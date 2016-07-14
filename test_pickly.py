@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from pickly import Pickly
 from pickly.pickly import AttributeNotFoundException
 
