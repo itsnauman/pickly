@@ -3,7 +3,7 @@
 
 `Pickly` is a tiny library for `JSON` object mapping in `Python`. It you allows to access `JSON` attributes like plain old objects just like in `Javascript`. There is no need to deal with dictionaries anymore 🎉
 
-## Installation
+## Installation 
 The recommended installation method is pip:
 ```
 $ pip install pickly 
@@ -43,7 +43,7 @@ obj[0].name # Newman Gates
 for item in obj[0].friends:
     item.name
 ```
-### Using Pickly with Requests
+### 👉 Using Pickly with Requests
 ```python
 from pickly import Pickly
 import requests
@@ -55,7 +55,7 @@ for item in obj:
     item.title
 ```
 
-### Using Pickly with a JSON file
+### 👉 Using Pickly with a JSON file
 ```python
 from pickly import Pickly
 
