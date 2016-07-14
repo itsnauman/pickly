@@ -86,6 +86,7 @@ class TestPickly(unittest.TestCase):
         '''
         obj = Pickly(json_str)
 
+        self.assertTrue(iter(obj))
         self.assertIsInstance(obj[0], Pickly)
         self.assertIsInstance(obj[0].countries[0], Pickly)
         self.assertEqual(obj[0].countries[0].Pakistan, "Islamabad")
@@ -104,6 +105,24 @@ class TestPickly(unittest.TestCase):
         obj = Pickly(json_str)
 
         self.assertEqual(obj[0].countries.Pakistan, "Islamabad")
+
+    def test_nested_obj_in_list(self):
+        json_str = '''
+        {
+            "countries": [
+                {
+                    "Pakistan": "Islamabad"
+                },
+                {
+                    "USA": "Washington"
+                }
+            ]
+        }
+        '''
+        obj = Pickly(json_str)
+
+        self.assertIsInstance(obj.countries[0], Pickly)
+        self.assertEqual(obj.countries[1].USA, "Washington")
 
     def test_chained_objects(self):
         json_str = '''
@@ -124,6 +143,19 @@ class TestPickly(unittest.TestCase):
         obj = Pickly(json_dict)
         self.assertEquals(obj.countries.Pakistan, "Islamabad")
 
+    def test_no_obj_in_list(self):
+        json_str = '''
+        {
+            "countries": [
+                "Pakistan",
+                "USA"
+            ]
+        }
+        '''
+        obj = Pickly(json_str)
+
+        self.assertTrue(iter(obj.countries))
+        self.assertEqual(obj.countries[0], "Pakistan")
 
 if __name__ == '__main__':
     unittest.main()
