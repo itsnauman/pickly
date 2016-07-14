@@ -3,6 +3,11 @@
 
 `Pickly` is a tiny library for `JSON` object mapping in `Python`. It you allows to access `JSON` attributes like plain old objects (just like in `Javascript`) rather than dealing with dictionaries (eww!)
 
+## Installation
+```python
+pip install pickly 
+```
+
 ## Usage
 ```python
 from pickly import Pickly
