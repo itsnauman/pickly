@@ -12,7 +12,7 @@ class AttributeNotFoundException(Exception):
 class Pickly(object):
 
     def __init__(self, json_data):
-        if isinstance(json_data, dict):
+        if isinstance(json_data, dict) or isinstance(json_data, list):
             self.json = json_data
 
         if isinstance(json_data, str) or isinstance(json_data, unicode):
@@ -24,7 +24,7 @@ class Pickly(object):
 
         obj = self.json[attr]
 
-        if isinstance(obj, dict):
+        if isinstance(obj, dict) or isinstance(obj, list):
             return Pickly(obj)
 
         return obj
