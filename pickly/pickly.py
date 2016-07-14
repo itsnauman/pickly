@@ -23,7 +23,6 @@ class Pickly(object):
             raise AttributeNotFoundException()
 
         obj = self.json[attr]
-
         if isinstance(obj, dict) or isinstance(obj, list):
             return Pickly(obj)
 
@@ -37,11 +36,11 @@ class Pickly(object):
         if list_size <= index:
             raise IndexError("Only {0} elements in the list".format(list_size))
 
-        element = self.json[index]
-        if isinstance(element, dict):
-            return Pickly(element)
+        obj_element = self.json[index]
+        if isinstance(obj_element, dict):
+            return Pickly(obj_element)
 
-        return obj
+        return obj_element
 
     def __repr__(self):
         return json.dumps(self.json)
