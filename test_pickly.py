@@ -37,6 +37,52 @@ class TestPickly(unittest.TestCase):
         with self.assertRaises(AttributeNotFoundException):
             obj.foo
 
+    def test_invalid_index_access(self):
+        json_str = '''
+        {
+            "countries": {
+                "Pakistan": "Islamabad",
+                "USA": "Washington"
+            }
+        }
+        '''
+
+        with self.assertRaises(TypeError):
+            Pickly(json_str)[0]
+
+    def test_out_of_bound_index(self):
+        json_str = '''
+        [
+            {
+                "countries": {
+                    "Pakistan": "Islamabad",
+                    "USA": "Washington"
+                }
+            }
+        ]
+        '''
+        obj = Pickly(json_str)
+
+        with self.assertRaises(IndexError):
+            obj[1]  # At length of list
+
+        with self.assertRaises(IndexError):
+            obj[2]  # Out of list length
+
+    def test_indexing(self):
+        json_str = '''
+        [
+            {
+                "countries": {
+                    "Pakistan": "Islamabad",
+                    "USA": "Washington"
+                }
+            }
+        ]
+        '''
+        obj = Pickly(json_str)
+        self.assertEqual(obj[0].countries.Pakistan, "Islamabad")
+
     def test_chained_objects(self):
         json_str = '''
         {
