@@ -159,5 +159,32 @@ class TestPickly(unittest.TestCase):
         self.assertTrue(iter(obj.countries))
         self.assertEqual(obj.countries[0], "Pakistan")
 
+    def test_readme_example(self):
+        json = '''
+            [
+              {
+                "name": "Newman Gates",
+                "tags": [
+                  "sunt",
+                  "cillum"
+                ],
+                "friends": [
+                  {
+                    "id": 0,
+                    "name": "Greer Bentley"
+                  },
+                  {
+                    "id": 1,
+                    "name": "Ebony Montgomery"
+                  }
+                ]
+              }
+            ]
+        '''
+        obj = Pickly(json)
+
+        self.assertEqual(obj[0].name, "Newman Gates")
+        self.assertTrue(iter(obj[0].friends))
+
 if __name__ == '__main__':
     unittest.main()
