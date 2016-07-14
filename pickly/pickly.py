@@ -8,7 +8,9 @@ class AttributeNotFoundException(Exception):
     """
     Exception raised when an attribute isn't found in the json data
     """
-    pass
+
+    def __init__(self, message):
+        super(AttributeNotFoundException, self).__init__(message)
 
 
 class Pickly(object):
@@ -22,7 +24,7 @@ class Pickly(object):
 
     def __getattr__(self, attr):
         if attr not in self.json:
-            raise AttributeNotFoundException()
+            raise AttributeNotFoundException("{0} doesn't exist".format(attr))
 
         obj = self.json[attr]
         if isinstance(obj, dict) or isinstance(obj, list):
