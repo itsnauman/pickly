@@ -69,6 +69,27 @@ class TestPickly(unittest.TestCase):
         with self.assertRaises(IndexError):
             obj[2]  # Out of list length
 
+    def test_multiple_indexed_nesting(self):
+        json_str = '''
+        [
+            {
+                "countries": [
+                    {
+                        "Pakistan": "Islamabad"
+                    },
+                    {
+                        "USA": "Washington"
+                    }
+                ]
+            }
+        ]
+        '''
+        obj = Pickly(json_str)
+
+        self.assertIsInstance(obj[0], Pickly)
+        self.assertIsInstance(obj[0].countries[0], Pickly)
+        self.assertEqual(obj[0].countries[0].Pakistan, "Islamabad")
+
     def test_indexing(self):
         json_str = '''
         [
@@ -81,6 +102,7 @@ class TestPickly(unittest.TestCase):
         ]
         '''
         obj = Pickly(json_str)
+
         self.assertEqual(obj[0].countries.Pakistan, "Islamabad")
 
     def test_chained_objects(self):
@@ -92,8 +114,8 @@ class TestPickly(unittest.TestCase):
             }
         }
         '''
-
         obj = Pickly(json_str)
+
         self.assertEquals(obj.countries.Pakistan, "Islamabad")
         self.assertEquals(obj.countries.USA, "Washington")
 
