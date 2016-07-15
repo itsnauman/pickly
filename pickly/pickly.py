@@ -34,7 +34,7 @@ class Pickly(object):
 
     def __getitem__(self, index):
         if not isinstance(self.json, list):
-            raise TypeError("Element not of type list")
+            raise TypeError("Element doesn't support indexing")
 
         list_size = len(self.json)
         if list_size <= index:

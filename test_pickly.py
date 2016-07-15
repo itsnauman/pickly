@@ -71,6 +71,9 @@ class TestPickly(unittest.TestCase):
         with self.assertRaises(IndexError):
             obj[2]  # Out of list length
 
+    def test_invalid_param_type(self):
+
+
     def test_multiple_indexed_nesting(self):
         json_str = '''
         [
