@@ -1,5 +1,6 @@
 # Pickly :cactus:
 [![Build Status](https://travis-ci.org/itsnauman/pickly.svg?branch=master)](https://travis-ci.org/itsnauman/pickly)
+[![codecov](https://codecov.io/gh/itsnauman/pickly/branch/master/graph/badge.svg)](https://codecov.io/gh/itsnauman/pickly)
 
 `Pickly` is a tiny library for `JSON` object mapping in `Python`. It you allows to access `JSON` attributes like plain old objects just like in `Javascript`. There is no need to deal with dictionaries anymore 🎉
 
