@@ -71,6 +71,22 @@ class TestPickly(unittest.TestCase):
         with self.assertRaises(IndexError):
             obj[2]  # Out of list length
 
+    def test_type_error(self):
+        json_str = '''
+        [
+            {
+                "countries": {
+                    "Pakistan": "Islamabad",
+                    "USA": "Washington"
+                }
+            }
+        ]
+        '''
+        obj = Pickly(json_str)
+
+        with self.assertRaises(TypeError):
+            obj[0].countries[0]
+
     def test_multiple_indexed_nesting(self):
         json_str = '''
         [
