@@ -202,5 +202,20 @@ class TestPickly(unittest.TestCase):
         self.assertEqual(obj[0].name, "Newman Gates")
         self.assertTrue(iter(obj[0].friends))
 
+    def test_repr(self):
+        json = '''
+        {
+            "friends": [
+              {
+                "id": 0,
+                "name": "Greer Bentley"
+              }
+            ]
+        }
+        '''
+        obj = Pickly(json)
+
+        self.assertIsInstance(repr(obj.friends), str)
+
 if __name__ == '__main__':
     unittest.main()
