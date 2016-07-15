@@ -37,6 +37,9 @@ json = '''
 # Woallah, you are ready! 🎉🍰
 obj = Pickly(json)
 
+# Print an object to see what's inside
+print obj[0].friends # [{"id": 0, "name": "Greer Bentley"}, {"id": 1, "name": "Ebony Montgomery"}]
+
 obj[0].name # Newman Gates
 
 # Iterate through lists
