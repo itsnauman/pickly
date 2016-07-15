@@ -217,5 +217,22 @@ class TestPickly(unittest.TestCase):
 
         self.assertIsInstance(repr(obj.friends), str)
 
+    def test_get_attributes(self):
+        json = '''
+        {
+            "friends": [
+              {
+                "id": 0,
+                "name": "Greer Bentley"
+              }
+            ]
+        }
+        '''
+        obj = Pickly(json)
+
+        self.assertIsNone(obj.friends.attrs())
+        self.assertIsNotNone(obj.friends[0].attrs())
+
+
 if __name__ == '__main__':
     unittest.main()
