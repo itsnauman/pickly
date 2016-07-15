@@ -46,5 +46,10 @@ class Pickly(object):
 
         return obj_element
 
+    def attrs(self):
+        """ Returns a list of all accessible attributes within an object """
+        if isinstance(self.json, dict):
+            return self.json.keys()
+
     def __repr__(self):
         return json.dumps(self.json)
