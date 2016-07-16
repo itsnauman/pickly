@@ -15,36 +15,36 @@ $ pip install pickly
 from pickly import Pickly
 
 json = '''
-    [
+  {
+    "name": "Newman Gates",
+    "tags": [
+      "sunt",
+      "cillum"
+    ],
+    "friends": [
       {
-        "name": "Newman Gates",
-        "tags": [
-          "sunt",
-          "cillum"
-        ],
-        "friends": [
-          {
-            "id": 0,
-            "name": "Greer Bentley"
-          },
-          {
-            "id": 1,
-            "name": "Ebony Montgomery"
-          }
-        ]
+        "id": 0,
+        "name": "Greer Bentley"
+      },
+      {
+        "id": 1,
+        "name": "Ebony Montgomery"
       }
     ]
+  }
 '''
 # Woallah, you are ready! 🎉🍰
 obj = Pickly(json)
 
 # Print an object to see what's inside
-print obj[0].friends # [{"id": 0, "name": "Greer Bentley"}, {"id": 1, "name": "Ebony Montgomery"}]
+print obj.friends # [{"id": 0, "name": "Greer Bentley"}, {"id": 1, "name": "Ebony Montgomery"}]
 
-obj[0].name # Newman Gates
+print obj.tags[0] # sunt
+
+obj.name # Newman Gates
 
 # Iterate through lists
-for item in obj[0].friends:
+for item in obj.friends:
     item.name
 ```
 ### 👉 Using Pickly with Requests
