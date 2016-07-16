@@ -8,25 +8,8 @@ import unittest
 
 class TestPickly(unittest.TestCase):
 
-    def test_invalid_json(self):
-        json_str = "Invalid JSON"
-
-        with self.assertRaises(ValueError):
-            Pickly(json_str)
-
-    def test_invalid_json_format(self):
-        json_str = '''
-        {
-            name: "Pickly",
-            value: {
-        }
-        '''
-
-        with self.assertRaises(ValueError):
-            Pickly(json_str)
-
-    def test_nonexistant_attribute(self):
-        json_str = '''
+    def setUp(self):
+        self.valid_json = '''
         {
             "countries": {
                 "Pakistan": "Islamabad",
@@ -35,25 +18,7 @@ class TestPickly(unittest.TestCase):
         }
         '''
 
-        obj = Pickly(json_str)
-        with self.assertRaises(AttributeNotFoundException):
-            obj.foo
-
-    def test_invalid_index_access(self):
-        json_str = '''
-        {
-            "countries": {
-                "Pakistan": "Islamabad",
-                "USA": "Washington"
-            }
-        }
-        '''
-
-        with self.assertRaises(TypeError):
-            Pickly(json_str)[0]
-
-    def test_out_of_bound_index(self):
-        json_str = '''
+        self.valid_json_with_list = '''
         [
             {
                 "countries": {
@@ -63,32 +28,8 @@ class TestPickly(unittest.TestCase):
             }
         ]
         '''
-        obj = Pickly(json_str)
 
-        with self.assertRaises(IndexError):
-            obj[1]  # At length of list
-
-        with self.assertRaises(IndexError):
-            obj[2]  # Out of list length
-
-    def test_type_error(self):
-        json_str = '''
-        [
-            {
-                "countries": {
-                    "Pakistan": "Islamabad",
-                    "USA": "Washington"
-                }
-            }
-        ]
-        '''
-        obj = Pickly(json_str)
-
-        with self.assertRaises(TypeError):
-            obj[0].countries[0]
-
-    def test_multiple_indexed_nesting(self):
-        json_str = '''
+        self.json_with_dict_nesting = '''
         [
             {
                 "countries": [
@@ -102,7 +43,61 @@ class TestPickly(unittest.TestCase):
             }
         ]
         '''
-        obj = Pickly(json_str)
+
+        self.readme_example_json = '''
+        {
+            "friends": [
+              {
+                "id": 0,
+                "name": "Greer Bentley"
+              }
+            ]
+        }
+        '''
+
+    def test_invalid_json(self):
+        json = "Invalid JSON"
+
+        with self.assertRaises(ValueError):
+            Pickly(json)
+
+    def test_invalid_json_format(self):
+        json = '''
+        {
+            name: "Pickly",
+            value: {
+        }
+        '''
+
+        with self.assertRaises(ValueError):
+            Pickly(json)
+
+    def test_nonexistant_attribute(self):
+        obj = Pickly(self.valid_json)
+        with self.assertRaises(AttributeNotFoundException):
+            obj.foo
+
+    def test_invalid_index_access(self):
+        with self.assertRaises(TypeError):
+            Pickly(self.valid_json)[0]
+
+    def test_out_of_bound_index(self):
+        obj = Pickly(self.valid_json_with_list)
+
+        with self.assertRaises(IndexError):
+            obj[1]  # At length of list
+
+        with self.assertRaises(IndexError):
+            obj[2]  # Out of list length
+
+    def test_type_error(self):
+        obj = Pickly(self.valid_json_with_list)
+
+        with self.assertRaises(TypeError):
+            obj[0].countries[0]
+
+    def test_multiple_indexed_nesting(self):
+        obj = Pickly(self.json_with_dict_nesting)
 
         self.assertTrue(iter(obj))
         self.assertIsInstance(obj[0], Pickly)
@@ -110,48 +105,17 @@ class TestPickly(unittest.TestCase):
         self.assertEqual(obj[0].countries[0].Pakistan, "Islamabad")
 
     def test_indexing(self):
-        json_str = '''
-        [
-            {
-                "countries": {
-                    "Pakistan": "Islamabad",
-                    "USA": "Washington"
-                }
-            }
-        ]
-        '''
-        obj = Pickly(json_str)
-
+        obj = Pickly(self.valid_json_with_list)
         self.assertEqual(obj[0].countries.Pakistan, "Islamabad")
 
     def test_nested_obj_in_list(self):
-        json_str = '''
-        {
-            "countries": [
-                {
-                    "Pakistan": "Islamabad"
-                },
-                {
-                    "USA": "Washington"
-                }
-            ]
-        }
-        '''
-        obj = Pickly(json_str)
+        obj = Pickly(self.json_with_dict_nesting)
 
-        self.assertIsInstance(obj.countries[0], Pickly)
-        self.assertEqual(obj.countries[1].USA, "Washington")
+        self.assertIsInstance(obj[0].countries[0], Pickly)
+        self.assertEqual(obj[0].countries[1].USA, "Washington")
 
     def test_chained_objects(self):
-        json_str = '''
-        {
-            "countries": {
-                "Pakistan": "Islamabad",
-                "USA": "Washington"
-            }
-        }
-        '''
-        obj = Pickly(json_str)
+        obj = Pickly(self.valid_json)
 
         self.assertEquals(obj.countries.Pakistan, "Islamabad")
         self.assertEquals(obj.countries.USA, "Washington")
@@ -162,7 +126,7 @@ class TestPickly(unittest.TestCase):
         self.assertEquals(obj.countries.Pakistan, "Islamabad")
 
     def test_no_obj_in_list(self):
-        json_str = '''
+        json = '''
         {
             "countries": [
                 "Pakistan",
@@ -170,65 +134,18 @@ class TestPickly(unittest.TestCase):
             ]
         }
         '''
-        obj = Pickly(json_str)
+        obj = Pickly(json)
 
         self.assertTrue(iter(obj.countries))
         self.assertEqual(obj.countries[0], "Pakistan")
 
-    def test_readme_example(self):
-        json = '''
-            [
-              {
-                "name": "Newman Gates",
-                "tags": [
-                  "sunt",
-                  "cillum"
-                ],
-                "friends": [
-                  {
-                    "id": 0,
-                    "name": "Greer Bentley"
-                  },
-                  {
-                    "id": 1,
-                    "name": "Ebony Montgomery"
-                  }
-                ]
-              }
-            ]
-        '''
-        obj = Pickly(json)
-
-        self.assertEqual(obj[0].name, "Newman Gates")
-        self.assertTrue(iter(obj[0].friends))
-
     def test_repr(self):
-        json = '''
-        {
-            "friends": [
-              {
-                "id": 0,
-                "name": "Greer Bentley"
-              }
-            ]
-        }
-        '''
-        obj = Pickly(json)
+        obj = Pickly(self.readme_example_json)
 
         self.assertIsInstance(repr(obj.friends), str)
 
     def test_get_attributes(self):
-        json = '''
-        {
-            "friends": [
-              {
-                "id": 0,
-                "name": "Greer Bentley"
-              }
-            ]
-        }
-        '''
-        obj = Pickly(json)
+        obj = Pickly(self.readme_example_json)
 
         self.assertIsNone(obj.friends.attrs())
         self.assertIsNotNone(obj.friends[0].attrs())
