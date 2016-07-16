@@ -17,30 +17,30 @@ class Pickly(object):
 
     def __init__(self, json_data):
         if isinstance(json_data, dict) or isinstance(json_data, list):
-            self.json = json_data
+            self._json = json_data
 
         if isinstance(json_data, str) or isinstance(json_data, unicode):
-            self.json = json.loads(json_data)
+            self._json = json.loads(json_data)
 
     def __getattr__(self, attr):
-        if attr not in self.json:
+        if attr not in self._json:
             raise AttributeNotFoundException("{0} doesn't exist".format(attr))
 
-        obj = self.json[attr]
+        obj = self._json[attr]
         if isinstance(obj, dict) or isinstance(obj, list):
             return Pickly(obj)
 
         return obj
 
     def __getitem__(self, index):
-        if not isinstance(self.json, list):
+        if not isinstance(self._json, list):
             raise TypeError("Element doesn't support indexing")
 
-        list_size = len(self.json)
+        list_size = len(self._json)
         if list_size <= index:
             raise IndexError("Only {0} elements in the list".format(list_size))
 
-        obj_element = self.json[index]
+        obj_element = self._json[index]
         if isinstance(obj_element, dict):
             return Pickly(obj_element)
 
@@ -48,8 +48,8 @@ class Pickly(object):
 
     def attrs(self):
         """ Returns a list of all accessible attributes within an object """
-        if isinstance(self.json, dict):
-            return self.json.keys()
+        if isinstance(self._json, dict):
+            return self._json.keys()
 
     def __repr__(self):
-        return json.dumps(self.json)
+        return json.dumps(self._json)
